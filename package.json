@@ -18,7 +18,9 @@
     "score-run": "node --env-file-if-exists=.env --import tsx src/scripts/score-run.ts",
     "run-cost": "node --env-file-if-exists=.env --import tsx src/scripts/run-cost.ts",
     "taxonomy-pick": "node --env-file-if-exists=.env --import tsx src/scripts/taxonomy-pick.ts",
-    "taxonomy-structure": "node --env-file-if-exists=.env --import tsx src/scripts/taxonomy-structure.ts"
+    "taxonomy-structure": "node --env-file-if-exists=.env --import tsx src/scripts/taxonomy-structure.ts",
+    "rule-sweep": "node --env-file-if-exists=.env --import tsx src/scripts/rule-sweep.ts",
+    "translation-score": "node --env-file-if-exists=.env --import tsx src/scripts/translation-score.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

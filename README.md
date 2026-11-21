@@ -30,10 +30,17 @@ Cost of the run, measured from token counts: $2.54 for 230 quotes. Full breakdow
 How to read it: the model gives more labels than the analysts did (2.07 against 1.68 per quote) and gets the
 right indicator far more often than the exact category. These are baseline numbers, before any change.
 
+Translations score chrF 58.6 against the human ones (floor for an untranslated quote: 23.3), see
+[results/2026-11-19-dev-staging-translation.md](results/2026-11-19-dev-staging-translation.md).
+
 ## What I learned so far
 
 - [Note 1: Is the old gold still valid for today's taxonomy?](docs/notes/01-taxonomy-check.md)
   Three cheap checks before scoring anything, and a column that turned out to be partly a copy of the label.
+- [Note 2: Can a simple rule fix over-labelling?](docs/notes/02-rules-cannot-fix-ranking.md)
+  No. An oracle shows the problem is the model's ranking, and its stated confidence is weak evidence.
+- [Note 3: Scoring translations, where the metric was the easy part](docs/notes/03-scoring-translations.md)
+  chrF, validated against sacrebleu, and the three reference problems found by reading the worst cases.
 
 ## Method in short
 
@@ -50,7 +57,11 @@ Details and limitations: [docs/method.md](docs/method.md).
 ## Layout
 
 ```
-src/metrics/multilabel.ts     metric definitions + tests
+src/metrics/multilabel.ts     multi-label metric definitions + tests
+src/metrics/chrf.ts           chrF, tested against sacrebleu
+src/metrics/bootstrap.ts      paired bootstrap intervals for comparing versions
+src/scripts/rule-sweep.ts     re-score a run under post-processing rules, with an oracle and calibration
+src/scripts/translation-score.ts  chrF of a run's translations against the human ones
 src/scripts/build-sample.ts   seeded stratified sample, dev/test split, gold file
 src/scripts/export-run.ts     pull a run's outputs from the app database
 src/scripts/score-run.ts      join to gold, score, write private detail + public summary
@@ -88,5 +99,4 @@ Results are published as aggregates only, with categories by code.
   ideas cost cents and minutes, then confirm winners end to end.
 - First experiment: show the categoriser the survey question the quote answers (taken from the raw input,
   not the labelled sheet, see Note 1).
-- Score translations against the human ones (chrF, then an LLM judge).
-- Sweep a confidence threshold and segment handling, since the model over-labels.
+- An LLM judge for translation meaning on the low-chrF tail (Note 3).

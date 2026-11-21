@@ -66,6 +66,20 @@ A ratio with a zero denominator counts as 0, as in scikit-learn with `zero_divis
 Rules that are choices, not facts, and are switchable in `score-run`: the union over segments, keeping every
 suggestion regardless of confidence, and weighting (off by default).
 
+## Comparing versions
+
+Two versions are compared on the same quotes with a paired bootstrap (`src/metrics/bootstrap.ts`): resample the
+quotes with replacement 2,000 times, score both versions on each resample, and report the 95% interval of the
+difference. An interval that includes 0 means the difference could be sampling noise from this set of quotes.
+It does not cover run-to-run model variation, which needs repeated runs.
+
+## Scoring translations
+
+chrF (`src/metrics/chrf.ts`, sacrebleu defaults, tested against sacrebleu) between the pipeline's translation and
+the human one, pooled at corpus level, with a bootstrap interval. Quotes whose reference is a per-category excerpt
+are left out. Editorial notes of the form "[on ...]" are removed from references; the score against the raw
+references is reported alongside. A floor (the untranslated original scored the same way) gives scale. See Note 3.
+
 ## Cost
 
 Measured, not estimated: the workers save successful executions, and `run-cost` sums the token counts each
@@ -77,6 +91,7 @@ they were fetched).
 - The gold is one team's labels, not adjudicated, with no agreement measure. The ceiling for any model is
   unknown, so scores are for comparing versions, not for an absolute verdict.
 - The labelled sheet files some quotes under several questions, partly as a side effect of labelling, so its
-  question column must not be used as model input (Note 1).
+  question column must not be used as model input (Note 1). The same goes for the human translations, about a
+  fifth of which carry "[on topic]" notes naming the indicator (Note 3).
 - The union over segments rewards a model for splitting quotes finely. Segment-aware scoring is open.
 - 230 quotes give wide error bars on per-category numbers. Treat category-level results as leads, not findings.
