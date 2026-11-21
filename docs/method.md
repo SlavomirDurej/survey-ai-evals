@@ -90,8 +90,10 @@ they were fetched).
 
 - The gold is one team's labels, not adjudicated, with no agreement measure. The ceiling for any model is
   unknown, so scores are for comparing versions, not for an absolute verdict.
-- The labelled sheet files some quotes under several questions, partly as a side effect of labelling, so its
-  question column must not be used as model input (Note 1). The same goes for the human translations, about a
-  fifth of which carry "[on topic]" notes naming the indicator (Note 3).
+- The labelled sheet's question column mostly records where the analyst filed a quote (41% of traceable quotes
+  were moved from the question the respondent answered), so it must not be used as model input (Notes 1 and 4).
+  The real question comes from the raw export via `attach-questions`, which covers non-English quotes only.
+- The human translations must not be used as model input either: about a fifth carry "[on topic]" notes that
+  name the indicator (Note 3).
 - The union over segments rewards a model for splitting quotes finely. Segment-aware scoring is open.
 - 230 quotes give wide error bars on per-category numbers. Treat category-level results as leads, not findings.

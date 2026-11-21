@@ -41,6 +41,8 @@ Translations score chrF 58.6 against the human ones (floor for an untranslated q
   No. An oracle shows the problem is the model's ranking, and its stated confidence is weak evidence.
 - [Note 3: Scoring translations, where the metric was the easy part](docs/notes/03-scoring-translations.md)
   chrF, validated against sacrebleu, and the three reference problems found by reading the worst cases.
+- [Note 4: The question column was mostly the analyst's filing](docs/notes/04-the-question-column.md)
+  Matching quotes back to the raw export, 41% had been moved, and a correction to a number in Note 1.
 
 ## Method in short
 
@@ -67,6 +69,7 @@ src/scripts/export-run.ts     pull a run's outputs from the app database
 src/scripts/score-run.ts      join to gold, score, write private detail + public summary
 src/scripts/run-cost.ts       measured cost from saved n8n executions
 src/scripts/taxonomy-*.ts     checks that the old labels still fit today's taxonomy
+src/scripts/attach-questions.ts  match quotes to the raw export to recover the question actually answered
 tools/crosscheck_sklearn.py   recompute the metrics with scikit-learn
 results/                      aggregate results per run (public)
 docs/                         method and learning notes
@@ -97,6 +100,7 @@ Results are published as aggregates only, with categories by code.
 
 - Component-level experiments with promptfoo: call the categorise prompt directly against gold, so prompt
   ideas cost cents and minutes, then confirm winners end to end.
-- First experiment: show the categoriser the survey question the quote answers (taken from the raw input,
-  not the labelled sheet, see Note 1).
+- First experiment: show the categoriser the survey question the quote answers, taken from the raw export
+  (Note 4). It covers the 142 dev quotes with a known question; analysts follow the question for 48.5% of labels,
+  the pipeline for 35.6%.
 - An LLM judge for translation meaning on the low-chrF tail (Note 3).
